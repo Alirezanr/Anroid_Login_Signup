@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.25" />
 
     <EditText
-        android:id="@+id/edt_name"
+        android:id="@+id/edtEmail"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Name"
@@ -31,15 +31,15 @@
         app:layout_constraintVertical_bias="0.17000002" />
 
     <EditText
-        android:id="@+id/edt_email"
+        android:id="@+id/edtPassword"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Email"
         android:theme="@style/Preference.DialogPreference.EditTextPreference"
-        app:layout_constraintEnd_toEndOf="@+id/edt_name"
-        app:layout_constraintStart_toStartOf="@+id/edt_name"
-        app:layout_constraintTop_toBottomOf="@+id/edt_name" />
+        app:layout_constraintEnd_toEndOf="@+id/edtEmail"
+        app:layout_constraintStart_toStartOf="@+id/edtEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <EditText
         android:id="@+id/edt_password"
@@ -47,9 +47,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Password"
-        app:layout_constraintEnd_toEndOf="@+id/edt_email"
-        app:layout_constraintStart_toStartOf="@+id/edt_email"
-        app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+        app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
 
     <Button
@@ -80,14 +80,14 @@
         android:text="Already have an account?"
         android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/txtLogin"
+        app:layout_constraintEnd_toStartOf="@+id/txtSignup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <TextView
-        android:id="@+id/txtLogin"
+        android:id="@+id/txtSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
