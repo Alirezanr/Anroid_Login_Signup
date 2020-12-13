@@ -1,7 +1,6 @@
 package dan.nr.mvvm_signup.network
 
-import com.google.gson.GsonBuilder
-import dan.nr.mvvm_signup.BuildConfig
+import androidx.viewbinding.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
