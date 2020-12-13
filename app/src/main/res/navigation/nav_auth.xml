@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="dan.nr.mvvm_signup.ui.fragment.auth.LoginFragment"
+        android:name="dan.nr.mvvm_signup.ui.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="dan.nr.mvvm_signup.ui.fragment.auth.RegisterFragment"
+        android:name="dan.nr.mvvm_signup.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
 </navigation>

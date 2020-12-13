@@ -1,4 +1,4 @@
-package dan.nr.mvvm_signup.ui.fragment.base
+package dan.nr.mvvm_signup.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

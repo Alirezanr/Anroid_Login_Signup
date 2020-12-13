@@ -1,4 +1,4 @@
-package dan.nr.mvvm_signup.ui
+package dan.nr.mvvm_signup.ui.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package dan.nr.mvvm_signup.ui.fragment.auth
+package dan.nr.mvvm_signup.ui.auth
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

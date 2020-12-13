@@ -1,4 +1,4 @@
-package dan.nr.mvvm_signup.ui.fragment.auth
+package dan.nr.mvvm_signup.ui.auth
 
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +10,7 @@ import dan.nr.mvvm_signup.databinding.FragmentLoginBinding
 import dan.nr.mvvm_signup.network.AuthApi
 import dan.nr.mvvm_signup.network.Resource
 import dan.nr.mvvm_signup.repository.AuthRepository
-import dan.nr.mvvm_signup.ui.fragment.base.BaseFragment
-import dan.nr.mvvm_signup.ui.viewmodel.AuthViewModel
+import dan.nr.mvvm_signup.ui.base.BaseFragment
 import dan.nr.mvvm_signup.utils.TAG
 
 class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository>()

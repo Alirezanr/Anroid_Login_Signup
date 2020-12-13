@@ -1,10 +1,10 @@
-package dan.nr.mvvm_signup.ui.fragment.base
+package dan.nr.mvvm_signup.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dan.nr.mvvm_signup.repository.AuthRepository
 import dan.nr.mvvm_signup.repository.BaseRepository
-import dan.nr.mvvm_signup.ui.viewmodel.AuthViewModel
+import dan.nr.mvvm_signup.ui.auth.AuthViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(private val repository: BaseRepository) :

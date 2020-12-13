@@ -1,4 +1,4 @@
-package dan.nr.mvvm_signup.ui.viewmodel
+package dan.nr.mvvm_signup.ui.auth
 
 import android.util.Log
 import androidx.lifecycle.LiveData

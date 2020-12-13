@@ -13,5 +13,3 @@
 .externalNativeBuild
 .cxx
 local.properties
-app/src/main/java/dan/nr/mvvm_signup/ui/MainActivity.kt
-app/src/main/res/layout/activity_main.xml
