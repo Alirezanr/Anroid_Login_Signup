@@ -22,6 +22,6 @@ fun View.setViewVisibility(isVisible: Boolean)
 fun View.isViewEnable(enabled: Boolean)
 {
     isEnabled = enabled
-    alpha = if (enabled) 1f else 0.5f
+    alpha = if (enabled) 1f else 0.9f
 }
 

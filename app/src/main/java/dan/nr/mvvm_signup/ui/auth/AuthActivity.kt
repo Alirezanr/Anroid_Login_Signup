@@ -14,15 +14,7 @@ class AuthActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        val userPreferences = UserPreferences(this)
-        userPreferences.authToken.asLiveData().observe(this, Observer {
-            if (it != null)
-            {
-                startNewActivity(HomeActivity::class.java)
-            } else
-                setContentView(R.layout.activity_auth)
-        })
-
+        setContentView(R.layout.activity_auth)
 
     }
 }

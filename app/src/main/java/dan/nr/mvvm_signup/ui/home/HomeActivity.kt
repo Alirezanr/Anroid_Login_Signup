@@ -17,15 +17,5 @@ class HomeActivity : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val userPreferences = UserPreferences(this)
-        userPreferences.authToken.asLiveData().observe(this, Observer {
-            if (it == null)
-            {
-                startNewActivity(AuthActivity::class.java)
-            }
-        })
-
-
     }
 }

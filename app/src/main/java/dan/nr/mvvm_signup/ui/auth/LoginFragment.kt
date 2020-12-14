@@ -55,9 +55,18 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         }
 
         binding.edtPassword.addTextChangedListener {
-            val email: String = binding.edtEmail.text.toString().trim()
-            binding.btnLogin.isViewEnable(email.isNotEmpty() && it.toString().isNotEmpty())
+            doValidations()
         }
+        binding.edtEmail.addTextChangedListener {
+            doValidations()
+        }
+    }
+
+    fun doValidations()
+    {
+        val email: String = binding.edtEmail.text.toString().trim()
+        val password: String = binding.edtPassword.text.toString().trim()
+        binding.btnLogin.isViewEnable(email.isNotEmpty() && password.isNotEmpty())
     }
 
     override fun getViewModel() = AuthViewModel::class.java
