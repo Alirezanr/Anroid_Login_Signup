@@ -42,7 +42,6 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                     Log.i(TAG, "LoginFragment:Request failure because :" + response.errorBody)
                 }
             }
-
         })
 
         binding.btnLogin.setOnClickListener {
@@ -62,7 +61,7 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         }
     }
 
-    fun doValidations()
+    private fun doValidations()
     {
         val email: String = binding.edtEmail.text.toString().trim()
         val password: String = binding.edtPassword.text.toString().trim()
