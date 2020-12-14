@@ -4,32 +4,42 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import dan.nr.mvvm_signup.databinding.FragmentLoginBinding
 import dan.nr.mvvm_signup.network.AuthApi
 import dan.nr.mvvm_signup.network.Resource
 import dan.nr.mvvm_signup.repository.AuthRepository
 import dan.nr.mvvm_signup.ui.base.BaseFragment
+import dan.nr.mvvm_signup.ui.home.HomeActivity
 import dan.nr.mvvm_signup.utils.TAG
+import dan.nr.mvvm_signup.utils.isViewEnable
+import dan.nr.mvvm_signup.utils.setViewVisibility
+import dan.nr.mvvm_signup.utils.startNewActivity
 
 class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository>()
 {
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
         super.onActivityCreated(savedInstanceState)
+
+        binding.progressBar.setViewVisibility(false)
+        binding.btnLogin.isViewEnable(false)
+
         viewModel.loginResponse.observe(this.viewLifecycleOwner, Observer { response ->
+            binding.progressBar.setViewVisibility(false)
             when (response)
             {
                 is Resource.Success ->
                 {
-                    Toast.makeText(requireContext(), " Success :$response", Toast.LENGTH_SHORT).show()
+                    viewModel.saveAuthToken(response.value.user.access_token)
+                    requireActivity().startNewActivity(HomeActivity::class.java)
+
                     Log.i(TAG, "LoginFragment:Request successful")
                 }
                 is Resource.Failure ->
                 {
-                    Toast.makeText(requireContext()," Failure :"+response.errorBody.toString(), Toast.LENGTH_SHORT).show()
-                    Log.i(TAG, "BaseRepository:Requset successfull")
+                    Log.i(TAG, "LoginFragment:Request failure because :" + response.errorBody)
                 }
             }
 
@@ -38,8 +48,15 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.btnLogin.setOnClickListener {
             val email: String = binding.edtEmail.text.toString().trim()
             val password: String = binding.edtPassword.text.toString().trim()
+
+            binding.progressBar.setViewVisibility(true)
             //todo add input validations
             viewModel.login(email = email, password = password)
+        }
+
+        binding.edtPassword.addTextChangedListener {
+            val email: String = binding.edtEmail.text.toString().trim()
+            binding.btnLogin.isViewEnable(email.isNotEmpty() && it.toString().isNotEmpty())
         }
     }
 
@@ -49,5 +66,8 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                                     container: ViewGroup?
                                    ) = FragmentLoginBinding.inflate(inflater, container, false)
 
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java))
+    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java),
+                                                          userPreferences)
+
+
 }

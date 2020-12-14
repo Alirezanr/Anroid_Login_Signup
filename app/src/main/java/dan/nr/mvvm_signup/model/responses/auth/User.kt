@@ -1,4 +1,4 @@
-package dan.nr.mvvm_signup.model.responses
+package dan.nr.mvvm_signup.model.responses.auth
 
 data class User (
     val id:Int,

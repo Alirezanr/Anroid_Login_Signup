@@ -151,6 +151,7 @@
       <option name="CALL_PARAMETERS_LPAREN_ON_NEXT_LINE" value="false" />
       <option name="CALL_PARAMETERS_RPAREN_ON_NEXT_LINE" value="false" />
       <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="false" />
+      <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="false" />
       <option name="METHOD_CALL_CHAIN_WRAP" value="5" />
       <option name="ASSIGNMENT_WRAP" value="0" />
     </codeStyleSettings>
