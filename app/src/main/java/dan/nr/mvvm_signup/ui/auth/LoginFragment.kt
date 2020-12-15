@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import dan.nr.mvvm_signup.databinding.FragmentLoginBinding
 import dan.nr.mvvm_signup.network.AuthApi
 import dan.nr.mvvm_signup.network.Resource
 import dan.nr.mvvm_signup.repository.AuthRepository
 import dan.nr.mvvm_signup.ui.base.BaseFragment
 import dan.nr.mvvm_signup.ui.home.HomeActivity
-import dan.nr.mvvm_signup.utils.TAG
-import dan.nr.mvvm_signup.utils.isViewEnable
-import dan.nr.mvvm_signup.utils.setViewVisibility
-import dan.nr.mvvm_signup.utils.startNewActivity
+import dan.nr.mvvm_signup.utils.*
+import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository>()
 {
@@ -27,19 +26,22 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.btnLogin.isViewEnable(false)
 
         viewModel.loginResponse.observe(this.viewLifecycleOwner, Observer { response ->
-            binding.progressBar.setViewVisibility(false)
+            binding.progressBar.setViewVisibility(response is Resource.Loading)
+
             when (response)
             {
                 is Resource.Success ->
                 {
-                    viewModel.saveAuthToken(response.value.user.access_token)
-                    requireActivity().startNewActivity(HomeActivity::class.java)
+                    lifecycleScope.launch {
+                        viewModel.saveAuthToken(response.value.user.access_token!!)
+                        requireActivity().startNewActivity(HomeActivity::class.java)
 
+                    }
                     Log.i(TAG, "LoginFragment:Request successful")
                 }
                 is Resource.Failure ->
                 {
-                    Log.i(TAG, "LoginFragment:Request failure because :" + response.errorBody)
+                    handleApiError(response)
                 }
             }
         })
@@ -48,8 +50,6 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
             val email: String = binding.edtEmail.text.toString().trim()
             val password: String = binding.edtPassword.text.toString().trim()
 
-            binding.progressBar.setViewVisibility(true)
-            //todo add input validations
             viewModel.login(email = email, password = password)
         }
 
@@ -70,9 +70,11 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
 
     override fun getViewModel() = AuthViewModel::class.java
 
-    override fun getFragmentBinding(inflater: LayoutInflater,
-                                    container: ViewGroup?
-                                   ) = FragmentLoginBinding.inflate(inflater, container, false)
+    override fun getFragmentBinding(
+            inflater: LayoutInflater,
+            container: ViewGroup?) = FragmentLoginBinding.inflate(inflater,
+                                                                  container,
+                                                                  false)
 
     override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java),
                                                           userPreferences)
