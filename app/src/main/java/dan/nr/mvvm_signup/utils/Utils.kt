@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import dan.nr.mvvm_signup.network.Resource
 import dan.nr.mvvm_signup.ui.auth.LoginFragment
+import dan.nr.mvvm_signup.ui.base.BaseFragment
 
 const val TAG = "LOG_TAG"
 
@@ -37,6 +38,7 @@ fun View.snackBar(message: String, action: (() -> Unit)? = null)
             it()
         }
     }
+    snackbar.show()
 }
 
 fun Fragment.handleApiError(failure: Resource.Failure,
@@ -55,7 +57,7 @@ fun Fragment.handleApiError(failure: Resource.Failure,
                 requireView().snackBar("You have entered wrong email or password")
             } else
             {
-                //todo perform logout
+                (this as BaseFragment<*, *, *>).logout()
             }
         }
         else ->
@@ -63,4 +65,5 @@ fun Fragment.handleApiError(failure: Resource.Failure,
             requireView().snackBar(failure.errorBody.toString())
         }
     }
+
 }

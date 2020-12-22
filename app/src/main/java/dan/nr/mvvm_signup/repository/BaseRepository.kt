@@ -2,6 +2,7 @@ package dan.nr.mvvm_signup.repository
 
 import android.util.Log
 import dan.nr.mvvm_signup.network.Resource
+import dan.nr.mvvm_signup.network.UserApi
 import dan.nr.mvvm_signup.utils.TAG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,5 +34,9 @@ abstract class BaseRepository
                 }
             }
         }
+    }
+
+    suspend fun logout(api:UserApi)=safeApiCall {
+        api.userLogout()
     }
 }

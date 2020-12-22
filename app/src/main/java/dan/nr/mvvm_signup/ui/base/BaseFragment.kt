@@ -10,12 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import dan.nr.mvvm_signup.network.RemoteDataSource
+import dan.nr.mvvm_signup.network.UserApi
 import dan.nr.mvvm_signup.repository.BaseRepository
+import dan.nr.mvvm_signup.ui.auth.AuthActivity
 import dan.nr.mvvm_signup.utils.UserPreferences
+import dan.nr.mvvm_signup.utils.startNewActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-abstract class BaseFragment<VM : ViewModel, B : ViewBinding, R : BaseRepository> : Fragment()
+abstract class BaseFragment<VM : BaseViewModel, B : ViewBinding, R : BaseRepository> : Fragment()
 {
     protected lateinit var userPreferences: UserPreferences
     protected lateinit var binding: B
@@ -41,4 +44,11 @@ abstract class BaseFragment<VM : ViewModel, B : ViewBinding, R : BaseRepository>
     abstract fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?): B
     abstract fun getFragmentRepository(): R
 
+    fun logout() = lifecycleScope.launch {
+        val authToken = userPreferences.authToken.first()
+        val api = remoteDataSource.buildApi(UserApi::class.java, authToken)
+        viewModel.logout(api)
+        userPreferences.clear()
+        requireActivity().startNewActivity(AuthActivity::class.java)
+    }
 }

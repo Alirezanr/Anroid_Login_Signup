@@ -13,17 +13,20 @@ import dan.nr.mvvm_signup.network.UserApi
 import dan.nr.mvvm_signup.repository.UserRepository
 import dan.nr.mvvm_signup.ui.base.BaseFragment
 import dan.nr.mvvm_signup.ui.home.HomeViewModel
+import dan.nr.mvvm_signup.utils.handleApiError
 import dan.nr.mvvm_signup.utils.isViewEnable
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserRepository>()
 {
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    override fun onActivityCreated(savedInstanceState: Bundle?)
     {
-        super.onViewCreated(view, savedInstanceState)
-        binding.progressbar.isViewEnable(false)
-
+        super.onActivityCreated(savedInstanceState)
+        //  binding.progressbar.isViewEnable(false)
+        binding.buttonLogout.setOnClickListener {
+            logout()
+        }
         viewModel.getUser()
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
@@ -33,12 +36,25 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
                 {
                     updateUi(it.value.user)
                 }
+                is Resource.Failure->
+                {
+                    if(it.isNetworkError)
+                    {
+                        handleApiError(it)
+                    }
+                }
                 is Resource.Loading ->
                 {
                     binding.progressbar.isViewEnable(true)
                 }
             }
         })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     private fun updateUi(user: User)
@@ -48,7 +64,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
             textViewEmail.text=user.email
             textViewName.text=user.name
         }
-        binding.progressbar.isViewEnable(false)
+       // binding.progressbar.isViewEnable(false)
     }
 
 

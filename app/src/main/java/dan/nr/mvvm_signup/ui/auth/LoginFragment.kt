@@ -41,16 +41,13 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
                 }
                 is Resource.Failure ->
                 {
-                    handleApiError(response)
+                    handleApiError(response) { login() }
                 }
             }
         })
 
         binding.btnLogin.setOnClickListener {
-            val email: String = binding.edtEmail.text.toString().trim()
-            val password: String = binding.edtPassword.text.toString().trim()
-
-            viewModel.login(email = email, password = password)
+            login()
         }
 
         binding.edtPassword.addTextChangedListener {
@@ -59,6 +56,14 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.edtEmail.addTextChangedListener {
             doValidations()
         }
+    }
+
+    private fun login()
+    {
+        val email: String = binding.edtEmail.text.toString().trim()
+        val password: String = binding.edtPassword.text.toString().trim()
+
+        viewModel.login(email = email, password = password)
     }
 
     private fun doValidations()
@@ -70,14 +75,11 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
 
     override fun getViewModel() = AuthViewModel::class.java
 
-    override fun getFragmentBinding(
-            inflater: LayoutInflater,
-            container: ViewGroup?) = FragmentLoginBinding.inflate(inflater,
-                                                                  container,
-                                                                  false)
+    override fun getFragmentBinding(inflater: LayoutInflater,
+                                    container: ViewGroup?) = FragmentLoginBinding.inflate(inflater,
+                                                                                          container,
+                                                                                          false)
 
     override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java),
                                                           userPreferences)
-
-
 }

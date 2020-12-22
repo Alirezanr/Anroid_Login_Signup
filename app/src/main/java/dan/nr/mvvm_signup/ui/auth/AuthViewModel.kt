@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import dan.nr.mvvm_signup.network.Resource
 import dan.nr.mvvm_signup.model.responses.auth.LoginResponse
 import dan.nr.mvvm_signup.repository.AuthRepository
+import dan.nr.mvvm_signup.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "LOG_TAG"
 
-class AuthViewModel(private val repository: AuthRepository) : ViewModel()
+class AuthViewModel(private val repository: AuthRepository) : BaseViewModel(repository)
 {
     private val _loginResponse = MutableLiveData<Resource<LoginResponse>>()
     val loginResponse: LiveData<Resource<LoginResponse>>
