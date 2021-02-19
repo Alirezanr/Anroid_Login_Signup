@@ -17,13 +17,14 @@
           <package name="" alias="true" withSubpackages="true" />
         </value>
       </option>
+      <option name="ALIGN_IN_COLUMNS_CASE_BRANCH" value="true" />
       <option name="LBRACE_ON_NEXT_LINE" value="true" />
       <option name="CONTINUATION_INDENT_IN_PARAMETER_LISTS" value="true" />
       <option name="CONTINUATION_INDENT_IN_ARGUMENT_LISTS" value="true" />
       <option name="CONTINUATION_INDENT_FOR_EXPRESSION_BODIES" value="true" />
       <option name="CONTINUATION_INDENT_FOR_CHAINED_CALLS" value="true" />
+      <option name="CONTINUATION_INDENT_IN_SUPERTYPE_LISTS" value="true" />
       <option name="CONTINUATION_INDENT_IN_ELVIS" value="true" />
-      <option name="WRAP_EXPRESSION_BODY_FUNCTIONS" value="0" />
       <option name="WRAP_ELVIS_EXPRESSIONS" value="0" />
       <option name="IF_RPAREN_ON_NEW_LINE" value="false" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
@@ -143,14 +144,18 @@
     </codeStyleSettings>
     <codeStyleSettings language="kotlin">
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+      <option name="KEEP_LINE_BREAKS" value="false" />
       <option name="CATCH_ON_NEW_LINE" value="true" />
       <option name="FINALLY_ON_NEW_LINE" value="true" />
       <option name="ALIGN_MULTILINE_PARAMETERS_IN_CALLS" value="true" />
+      <option name="ALIGN_MULTILINE_EXTENDS_LIST" value="true" />
       <option name="ALIGN_MULTILINE_METHOD_BRACKETS" value="true" />
+      <option name="CALL_PARAMETERS_WRAP" value="2" />
       <option name="CALL_PARAMETERS_LPAREN_ON_NEXT_LINE" value="false" />
       <option name="CALL_PARAMETERS_RPAREN_ON_NEXT_LINE" value="false" />
       <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="false" />
       <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="false" />
+      <option name="EXTENDS_LIST_WRAP" value="5" />
       <option name="METHOD_CALL_CHAIN_WRAP" value="5" />
       <option name="ASSIGNMENT_WRAP" value="0" />
     </codeStyleSettings>

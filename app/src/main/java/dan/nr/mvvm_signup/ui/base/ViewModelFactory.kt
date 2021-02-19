@@ -9,8 +9,7 @@ import dan.nr.mvvm_signup.ui.auth.AuthViewModel
 import dan.nr.mvvm_signup.ui.home.HomeViewModel
 import java.lang.IllegalArgumentException
 
-class ViewModelFactory(private val repository: BaseRepository) :
-    ViewModelProvider.NewInstanceFactory()
+class ViewModelFactory(private val repository: BaseRepository) : ViewModelProvider.NewInstanceFactory()
 {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T
     {

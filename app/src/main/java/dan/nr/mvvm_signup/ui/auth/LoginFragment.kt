@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import dan.nr.mvvm_signup.R
 import dan.nr.mvvm_signup.databinding.FragmentLoginBinding
 import dan.nr.mvvm_signup.network.AuthApi
 import dan.nr.mvvm_signup.network.Resource
@@ -25,26 +27,25 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.progressBar.setViewVisibility(false)
         binding.btnLogin.isViewEnable(false)
 
-        viewModel.loginResponse.observe(this.viewLifecycleOwner, Observer { response ->
-            binding.progressBar.setViewVisibility(response is Resource.Loading)
+        viewModel.loginResponse.observe(this.viewLifecycleOwner,
+                                        { response ->
+                                            binding.progressBar.setViewVisibility(response is Resource.Loading)
 
-            when (response)
-            {
-                is Resource.Success ->
-                {
-                    lifecycleScope.launch {
-                        viewModel.saveAuthToken(response.value.user.access_token!!)
-                        requireActivity().startNewActivity(HomeActivity::class.java)
-
-                    }
-                    Log.i(TAG, "LoginFragment:Request successful")
-                }
-                is Resource.Failure ->
-                {
-                    handleApiError(response) { login() }
-                }
-            }
-        })
+                                            when (response)
+                                            {
+                                                is Resource.Success ->
+                                                {
+                                                    lifecycleScope.launch {
+                                                        viewModel.saveAuthToken(response.value.user.access_token!!)
+                                                        requireActivity().startNewActivity(HomeActivity::class.java)
+                                                    }
+                                                }
+                                                is Resource.Failure ->
+                                                {
+                                                    handleApiError(response) { login() }
+                                                }
+                                            }
+                                        })
 
         binding.btnLogin.setOnClickListener {
             login()
@@ -56,6 +57,10 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         binding.edtEmail.addTextChangedListener {
             doValidations()
         }
+
+        binding.txtSignup.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegistrationFragment())
+        }
     }
 
     private fun login()
@@ -63,7 +68,8 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
         val email: String = binding.edtEmail.text.toString().trim()
         val password: String = binding.edtPassword.text.toString().trim()
 
-        viewModel.login(email = email, password = password)
+        viewModel.login(email = email,
+                        password = password)
     }
 
     private fun doValidations()
@@ -75,11 +81,11 @@ class LoginFragment : BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepo
 
     override fun getViewModel() = AuthViewModel::class.java
 
-    override fun getFragmentBinding(inflater: LayoutInflater,
-                                    container: ViewGroup?) = FragmentLoginBinding.inflate(inflater,
-                                                                                          container,
-                                                                                          false)
+    override fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?) =
+            FragmentLoginBinding.inflate(inflater,
+                                         container,
+                                         false)
 
-    override fun getFragmentRepository() = AuthRepository(remoteDataSource.buildApi(AuthApi::class.java),
-                                                          userPreferences)
+    override fun getFragmentRepository() =
+            AuthRepository(remoteDataSource.buildApi(AuthApi::class.java), userPreferences)
 }

@@ -9,8 +9,6 @@ import dan.nr.mvvm_signup.network.Resource
 import dan.nr.mvvm_signup.ui.auth.LoginFragment
 import dan.nr.mvvm_signup.ui.base.BaseFragment
 
-const val TAG = "LOG_TAG"
-
 fun <A : Activity> Activity.startNewActivity(activity: Class<A>)
 {
     Intent(this, activity).also {

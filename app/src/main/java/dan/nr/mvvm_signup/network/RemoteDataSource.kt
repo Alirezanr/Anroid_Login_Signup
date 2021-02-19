@@ -16,7 +16,6 @@ class RemoteDataSource
 
     fun <Api> buildApi(api: Class<Api>, authToken: String? = null): Api
     {
-
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

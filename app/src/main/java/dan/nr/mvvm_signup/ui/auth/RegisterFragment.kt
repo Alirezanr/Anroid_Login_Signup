@@ -1,60 +1,102 @@
 package dan.nr.mvvm_signup.ui.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import dan.nr.mvvm_signup.R
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import dan.nr.mvvm_signup.databinding.FragmentSignupBinding
+import dan.nr.mvvm_signup.network.AuthApi
+import dan.nr.mvvm_signup.network.Resource
+import dan.nr.mvvm_signup.repository.AuthRepository
+import dan.nr.mvvm_signup.ui.base.BaseFragment
+import dan.nr.mvvm_signup.ui.home.HomeActivity
+import dan.nr.mvvm_signup.utils.*
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class RegisterFragment : BaseFragment<AuthViewModel, FragmentSignupBinding, AuthRepository>()
+{
+    override fun onActivityCreated(savedInstanceState: Bundle?)
+    {
+        super.onActivityCreated(savedInstanceState)
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class RegisterFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+        binding.progressBar.setViewVisibility(false)
+        binding.btnRegister.isViewEnable(false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        viewModel.signupResponse.observe(this,
+                                         { response ->
+                                             binding.progressBar.setViewVisibility(response is Resource.Loading)
+                                             when (response)
+                                             {
+                                                 is Resource.Success ->
+                                                 {
+                                                     lifecycleScope.launch {
+                                                         viewModel.saveAuthToken(response.value.user!!.access_token!!)
+                                                         requireActivity().startNewActivity(HomeActivity::class.java)
+                                                     }
+                                                 }
+                                                 is Resource.Failure ->
+                                                 {
+                                                     handleApiError(response) { signup() }
+                                                 }
+                                             }
+                                         })
+        binding.txtLogin.setOnClickListener {
+            findNavController().navigate(RegisterFragmentDirections.actionRegistrationFragmentToLoginFragment())
+        }
+        binding.edtEmail.addTextChangedListener {
+            doValidations()
+        }
+        binding.edtName.addTextChangedListener {
+            doValidations()
+        }
+        binding.edtPassword.addTextChangedListener {
+            doValidations()
+        }
+
+        binding.edtPasswordRepeat.addTextChangedListener {
+            doValidations()
+        }
+
+        binding.btnRegister.setOnClickListener {
+            signup()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
+    private fun signup()
+    {
+        val name: String = binding.edtName.text.toString().trim()
+        val email: String = binding.edtEmail.text.toString().trim()
+        val password: String = binding.edtPassword.text.toString().trim()
+        val passwordRepeat: String = binding.edtPasswordRepeat.text.toString().trim()
+        viewModel.signup(email,
+                         name,
+                         password,
+                         passwordRepeat)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegisterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegisterFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun doValidations()
+    {
+        val email: String = binding.edtEmail.text.toString().trim()
+        val name: String = binding.edtName.text.toString().trim()
+        val password: String = binding.edtPassword.text.toString().trim()
+        val password_confirmation: String = binding.edtPasswordRepeat.text.toString().trim()
+        binding.btnRegister.isViewEnable(name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && password_confirmation.isNotEmpty())
     }
+
+    override fun getViewModel() = AuthViewModel::class.java
+
+    override fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?) =
+            FragmentSignupBinding.inflate(inflater,
+                                          container,
+                                          false)
+
+
+    override fun getFragmentRepository() =
+            AuthRepository(remoteDataSource.buildApi(AuthApi::class.java),
+                           userPreferences)
+
 }

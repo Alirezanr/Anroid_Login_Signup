@@ -15,6 +15,7 @@ import dan.nr.mvvm_signup.ui.base.BaseFragment
 import dan.nr.mvvm_signup.ui.home.HomeViewModel
 import dan.nr.mvvm_signup.utils.handleApiError
 import dan.nr.mvvm_signup.utils.isViewEnable
+import dan.nr.mvvm_signup.utils.setViewVisibility
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
@@ -30,6 +31,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
         viewModel.getUser()
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
+            binding.progressbar.setViewVisibility(it is Resource.Loading)
             when (it)
             {
                 is Resource.Success ->
@@ -64,7 +66,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding, UserReposi
             textViewEmail.text=user.email
             textViewName.text=user.name
         }
-       // binding.progressbar.isViewEnable(false)
     }
 
 
